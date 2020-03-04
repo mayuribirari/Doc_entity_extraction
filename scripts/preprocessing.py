@@ -3,22 +3,35 @@ import pytesseract
 import re
 import numpy as np
 
-def display(image, fx = 1, fy = 1):
-    '''Function to display image'''
-    image = cv2.resize(image,(0,0),fx = fx,fy = fy)
+
+def display(image, fx=1, fy=1):
+    """Function to display image
+    :param image: Input image
+    :param fx: Scale factor of x-axis
+    :param fy: Scale factor of y-axis
+    """
+    image = cv2.resize(image, (0, 0), fx=fx, fy=fy)
     cv2.imshow('Image', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
 def detect_orientation(image):
+    """ Returns correct oriented image
+    :param image: Input image
+    """
     newdata = pytesseract.image_to_osd(image)
     rotation = int(re.search('(?<=Rotate: )\\d+', newdata).group(0))
-    print("Rotation degrees : " , rotation)
+    print("Rotation degrees : ", rotation)
     return rotate_img(image, rotation)
 
 
 def rotate_img(image, degrees):
+    """Returns image rotated to the angle provided by detect_orientation
+    :param image: The input image
+    :param degrees: Angle to rotate
+    :return Corrected image
+    """
     if degrees == 90:
         return cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
     elif degrees == 180:
@@ -30,7 +43,12 @@ def rotate_img(image, degrees):
     else:
         print("DEGREE = ", degrees)
 
+
 def straighten(image):
+    """Applies straighten to an image
+    :param image : Input image
+    :return Straightened image
+    """
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray = cv2.bitwise_not(gray)
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
