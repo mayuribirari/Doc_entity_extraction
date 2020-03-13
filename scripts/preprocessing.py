@@ -65,6 +65,7 @@ def straighten(image):
     # print("Straightening angle : ", angle)
     return rotated
 
+
 def straighten_thresh(image):
     """Applies straighten to an image
     :param image : Input threshold image
@@ -83,6 +84,7 @@ def straighten_thresh(image):
     # print("Straightening angle : ", angle)
     return rotated
 
+
 def extract_image(image):
     """
     Returns borderless image
@@ -90,38 +92,35 @@ def extract_image(image):
     :returns borderless image
     """
     img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    re, img = cv2.threshold(img,190, 255, cv2.THRESH_BINARY)
+    _, img = cv2.threshold(img, 190, 255, cv2.THRESH_BINARY)
     cont, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     area = 0
     biggest_cont = cont[0][0]
-    peri = cv2.approxPolyDP(cont[0][0], 0.1, False)
 
     for i in cont:
         area1 = cv2.contourArea(i)
         if area1 > area:
-            peri = cv2.approxPolyDP(i, 0.1, True)
             area = area1
             biggest_cont = i
 
-    mask = np.zeros((image.shape[0], image.shape[1]),dtype=np.uint8)
+    mask = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
     cv2.drawContours(mask, [biggest_cont], -1, (255, 255, 255), 0)
     sub_image = img - mask
     st_sub_images = straighten_thresh(sub_image)
     # temp_img = cv2.cvtColor(st_sub_images)
-    thresh = cv2.threshold(st_sub_images,1,255,cv2.THRESH_BINARY)[1]
-    contours,hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    thresh = cv2.threshold(st_sub_images, 1, 255, cv2.THRESH_BINARY)[1]
+    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if len(contours) == 1:
         cnt = contours[0]
-        x,y,w,h = cv2.boundingRect(cnt)
-        st_sub_images = st_sub_images[y:y+h,x:x+w]
+        x, y, w, h = cv2.boundingRect(cnt)
+        st_sub_images = st_sub_images[y:y + h, x:x + w]
     return st_sub_images
 
 
-def plot_before_after(before,after):
+def plot_before_after(before, after):
     """
     :param before: Before correction image
-    :param before: After correction image
-    :param Title: Name of the image
+    :param after: After correction image
     """
     import matplotlib.pyplot as plt
     plt.figure(figsize=(18, 25))
