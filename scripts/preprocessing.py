@@ -23,7 +23,7 @@ def detect_orientation(image):
     custom_oem_psm_config = r'--oem 1--psm 7'
     newdata = pytesseract.image_to_osd(image,config= custom_oem_psm_config)
     rotation = int(re.search('(?<=Rotate: )\\d+', newdata).group(0))
-    print("Rotation degrees : ", rotation)
+    # print("Rotation degrees : ", rotation)
     return rotate_img(image, rotation)
 
 
