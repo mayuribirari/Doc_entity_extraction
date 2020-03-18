@@ -1,34 +1,32 @@
-# Driver logic here
-import cv2
-import scripts.preprocessing
-import numpy as np
-import scripts.background_removal
-from pytesseract.pytesseract import TesseractError
+def preprocess(PATH):
+    import scripts.main_preprocess
+    image = scripts.main_preprocess.preprocess(PATH)
+    return image
+
+
+def extract_fields(image):
+    import os
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'json\\Handwritting Recognission-2cf8babac416.json'
+
+    # Code by Mayuri
+    # PROJECT_ID = 'handwritting-recognission'
+    # SESSION_ID = '123'
+    return fields
+
+
+def convert_to_csv(fields):
+    import csv
+    titles = ("Buyer Name", "Property address", "Purchase Price", "Seller Brokerage Firm & License Number",
+              "Buyers Brokerage Firm & License Number", "Initial Deposit", "Balance Downpayment", "Purchase Price",
+              "Date Prepared"
+              )
+    with open('Extracted_Entities.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(titles)
+        writer.writerow(fields)
+
+
 PATH = '..\\images\\v2\\Lightroom\\out1.pdf_scaled_80.jpg'
-# PATH = '..\\images\\v1\\h.jpg'
-image_org = cv2.imread(PATH)
-
-##################### PREPROCESSING ####################
-
-image = np.copy(image_org)
-flag = False
-try:
-    image = scripts.preprocessing.detect_orientation(image)
-except TesseractError as e:
-    print('Exception raised ',e.message)
-    flag = True
-
-
-image = scripts.preprocessing.straighten(image)
-image = scripts.preprocessing.extract_image(image) # GENERATES BINARY IMAGE
-# scripts.preprocessing.display(image,0.35,0.35)
-if flag:
-    image = scripts.preprocessing.detect_orientation(image)
-    image = scripts.preprocessing.straighten_thresh(image)
-
-### EXTRA SPACE ###
-value = scripts.background_removal.detect_border_color(image)
-if value:
-    image = scripts.background_removal.cropped(image,value)
-scripts.preprocessing.plot_before_after(image_org, image)
-#################### OCR ##############################
+image = preprocess(PATH)
+fields = extract_fields(image)
+convert_to_csv(fields)
