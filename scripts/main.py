@@ -16,6 +16,7 @@ def extract_fields(image):
 
 def convert_to_csv(fields):
     import csv
+    import pandas as pd
     titles = ("Buyer Name", "Property address", "Purchase Price", "Seller Brokerage Firm & License Number",
               "Buyers Brokerage Firm & License Number", "Initial Deposit", "Balance Downpayment", "Purchase Price",
               "Date Prepared"
@@ -24,6 +25,9 @@ def convert_to_csv(fields):
         writer = csv.writer(file)
         writer.writerow(titles)
         writer.writerow(fields)
+    df = pd.read_csv('Extracted_Entities.csv')
+    print(df)
+
 
 
 PATH = '..\\images\\v2\\Lightroom\\out1.pdf_scaled_80.jpg'
