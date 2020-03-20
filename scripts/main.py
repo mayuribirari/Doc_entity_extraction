@@ -29,8 +29,9 @@ def convert_to_csv(fields):
     print(df)
 
 
-
-PATH = '..\\images\\v2\\Lightroom\\out1.pdf_scaled_80.jpg'
+import time
+PATH = '..\\images\\v2\\Lightroom\\out1.pdf_rot+scaled+border.jpg'
+start = time.time()
 image = preprocess(PATH)
-fields = extract_fields(image)
-convert_to_csv(fields)
+# fields = extract_fields(image)
+# convert_to_csv(fields)

@@ -17,19 +17,21 @@ def preprocess(PATH):
     try:
         image = scripts.preprocessing.detect_orientation(image)
     except TesseractError as e:
-        # print('Exception handled')
+        print('Exception handled')
         flag = True
     image = scripts.preprocessing.straighten(image)
-    image = scripts.preprocessing.extract_image(image)  # GENERATES BINARY IMAGE
+    image = scripts.preprocessing.extract_image(image)
+    # print(image.shape)
     # scripts.preprocessing.display(image,0.35,0.35)
+    cv2.imwrite('output_rgb.jpg',image)
     if flag:
         image = scripts.preprocessing.detect_orientation(image)
-        image = scripts.preprocessing.straighten_thresh(image)
-
+        image = scripts.preprocessing.straighten(image)
     ### EXTRA SPACE REMOVAL ###
     value = scripts.background_removal.detect_border_color(image)
+    print(value)
     if value:
         image = scripts.background_removal.cropped(image, value)
-    # scripts.preprocessing.plot_before_after(image_org, image)
+    scripts.preprocessing.plot_before_after(image_org, image)
     return image
 #################### OCR ##############################

@@ -21,9 +21,9 @@ def detect_orientation(image):
     :param image: Input image
     """
     custom_oem_psm_config = r'--oem 1--psm 7'
-    newdata = pytesseract.image_to_osd(image,config= custom_oem_psm_config)
+    newdata = pytesseract.image_to_osd(image, config=custom_oem_psm_config)
     rotation = int(re.search('(?<=Rotate: )\\d+', newdata).group(0))
-    # print("Rotation degrees : ", rotation)
+    print("[DEBUG]: Rotation degrees : ", rotation)
     return rotate_img(image, rotation)
 
 
@@ -42,7 +42,7 @@ def rotate_img(image, degrees):
     elif degrees == 0:
         return image
     else:
-        print("DEGREE = ", degrees)
+        print("[DEBUG]: DEGREE = ", degrees)
 
 
 def straighten(image):
@@ -63,7 +63,7 @@ def straighten(image):
     center = (w // 2, h // 2)
     M = cv2.getRotationMatrix2D(center=center, angle=angle, scale=1.0)
     rotated = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-    # print("Straightening angle : ", angle)
+    print("[DEBUG]: Straightening angle : ", angle)
     return rotated
 
 
@@ -151,36 +151,52 @@ def straighten_thresh(image):
 
 
 def extract_image(image):
-  """
+    """
   Returns borderless image
   :param image : Image with border
   :returns borderless image
   """
-  img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-  re, img = cv2.threshold(img,160, 255, cv2.THRESH_BINARY)
-  cont, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-  area = 0
-  biggest_cont = cont[0][0]
-  peri = cv2.approxPolyDP(cont[0][0], 0.1, False)
+    img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    re, img = cv2.threshold(img, 160, 255, cv2.THRESH_BINARY)
+    cont, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    area = 0
+    biggest_cont = cont[0][0]
+    peri = cv2.approxPolyDP(cont[0][0], 0.1, False)
 
-  for i in cont:
-      area1 = cv2.contourArea(i)
-      if area1 > area:
-          peri = cv2.approxPolyDP(i, 0.1, True)
-          area = area1
-          biggest_cont = i
+    for i in cont:
+        area1 = cv2.contourArea(i)
+        if area1 > area:
+            peri = cv2.approxPolyDP(i, 0.1, True)
+            area = area1
+            biggest_cont = i
 
-  mask = np.zeros((image.shape[0], image.shape[1]),dtype=np.uint8)
-  cv2.drawContours(mask, [biggest_cont], -1,(255,255,255),thickness=0)
-  sub_image = img - mask
-  st_sub_images = straighten_thresh(sub_image)
-  thresh = cv2.threshold(st_sub_images,1,255,cv2.THRESH_BINARY)[1]
-  contours,hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-  if len(contours) == 1:
-    cnt = contours[0]
-    x,y,w,h = cv2.boundingRect(cnt)
-    st_sub_images = st_sub_images[y:y+h,x:x+w]
-  return st_sub_images
+    # mask = np.zeros((image.shape[0], image.shape[1],3), dtype=np.uint8)
+    mask = np.full((image.shape[0], image.shape[1],3), 255 ,dtype=np.uint8)
+    cv2.drawContours(mask, [biggest_cont], -1, (255,255,255), thickness=5)
+    # cv2.fillPoly(mask, pts=[biggest_cont], color=(255,255,255))
+    cv2.fillPoly(mask, pts=[biggest_cont], color=(0,0,0))
+    display(mask,0.35,0.35)
+    # display(image,0.35,0.35)
+    sub_image = cv2.bitwise_or(image,mask)
+    # print(sub_image)
+    display(sub_image,0.35,0.35)
+    sub_image = detect_orientation(sub_image)
+    sub_image = straighten(sub_image)
+    # display(sub_image, 0.35, 0.35)
+    print(sub_image.shape)
+
+    # print(truthy.all())
+
+    # st_sub_images = straighten_thresh(cv2.cvtColor(sub_image,cv2.COLOR_RGB2GRAY))
+    # thresh = cv2.threshold(st_sub_images, 120, 255, cv2.THRESH_BINARY)[1]
+    # contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # if len(contours) == 1:
+    #     cnt = contours[0]
+    #     x, y, w, h = cv2.boundingRect(cnt)
+    #     sub_image = sub_image[y:y + h, x:x + w]
+    # plot_before_after(image,sub_image)
+    return sub_image
+
 
 def plot_before_after(before, after):
     """
@@ -188,7 +204,7 @@ def plot_before_after(before, after):
     :param after: After correction image
     """
     import matplotlib.pyplot as plt
-    plt.figure(figsize=(16, 22))
+    plt.figure(figsize=(12, 15))
     plt.subplot(1, 2, 1)
     plt.imshow(cv2.cvtColor(before, cv2.COLOR_BGR2RGB))
     # plt.axis('off')
@@ -196,7 +212,7 @@ def plot_before_after(before, after):
     plt.title(label="Before : ")
 
     plt.subplot(1, 2, 2)
-    plt.imshow(after, cmap='Greys_r')
+    plt.imshow(cv2.cvtColor(after, cv2.COLOR_BGR2RGB))
     # plt.axis('off')
     plt.grid(True)
     plt.title(label='After : ')

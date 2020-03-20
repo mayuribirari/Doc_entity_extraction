@@ -5,7 +5,7 @@ from scripts.preprocessing import display,detect_orientation
 # img = cv2.imread('..\\images\\v2\\Lightroom\\out1.pdf_rot+scaled.jpg')
 
 def detect_border_color(img):
-    # img = cv2.threshold((cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)),127,255,cv2.THRESH_BINARY)[1]
+    img = cv2.threshold((cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)),127,255,cv2.THRESH_BINARY)[1]
     l,b = img.shape
     PERCENTAGE = 3
     l = (l*PERCENTAGE)//100
@@ -21,12 +21,13 @@ def detect_border_color(img):
         # print(type(values1[np.argmax(counts1)]))
         return values1[np.argmax(counts1)]
     else:
-        print("Extra space exists")
+        print("[DEBUG]: Not cropping extra space!")
         return None
 
-def cropped(img_gray,value):
-    # img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    # img_gray = cv2.threshold(img_gray,127,255,type = cv2.THRESH_BINARY)[1]
+def cropped(img,value):
+    # print(img.shape)
+    img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img_gray = cv2.threshold(img_gray,127,255,type = cv2.THRESH_BINARY)[1]
     # print(type(img_gray),img_gray.shape)
     # print(img_gray)
     # display(img_gray,0.35,0.35)
@@ -37,7 +38,10 @@ def cropped(img_gray,value):
     cont_y = [i for i in range(img_gray_trans.shape[0]) if set(img_gray_trans[i]) != {value}]
     first_y,last_y =cont_y[0],cont_y[-1]
 
-    img_cropped : np.ndarray = img_gray[first_x:last_x,first_y:last_y]
+    img_cropped : np.ndarray = img[first_x:last_x,first_y:last_y]
+    # display(img_cropped,0.35,0.35)
+    # img_cropped = cv2.cvtColor(img_cropped,cv2.COLOR_GRAY2RGB)
+    # display(img_cropped,0.35,0.35)
     # print(img_cropped.shape)
     return img_cropped
 
