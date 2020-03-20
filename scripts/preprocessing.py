@@ -6,6 +6,7 @@ import numpy as np
 
 def display(image, fx=1, fy=1):
     """Function to display image
+
     :param image: Input image
     :param fx: Scale factor of x-axis
     :param fy: Scale factor of y-axis
@@ -17,18 +18,25 @@ def display(image, fx=1, fy=1):
 
 
 def detect_orientation(image):
-    """ Returns correct oriented image
-    :param image: Input image
     """
+    Returns correct oriented image
+
+    :param image: Input image
+    :return value of rotation needed
+    """
+    import time
+    a = time.time()
     custom_oem_psm_config = r'--oem 1--psm 7'
     newdata = pytesseract.image_to_osd(image, config=custom_oem_psm_config)
     rotation = int(re.search('(?<=Rotate: )\\d+', newdata).group(0))
     print("[DEBUG]: Rotation degrees : ", rotation)
+    print("[DEBUG]: Time taken in rotation op. is :", time.time()-a)
     return rotate_img(image, rotation)
 
 
 def rotate_img(image, degrees):
     """Returns image rotated to the angle provided by detect_orientation
+
     :param image: The input image
     :param degrees: Angle to rotate
     :return Corrected image
@@ -46,7 +54,9 @@ def rotate_img(image, degrees):
 
 
 def straighten(image):
-    """Applies straighten to an image
+    """
+    Applies straighten to an image
+
     :param image : Input image
     :return Straightened image
     """
@@ -68,7 +78,9 @@ def straighten(image):
 
 
 def straighten_thresh(image):
-    """Applies straighten to an image
+    """
+    Applies straighten to an image
+
     :param image : Input threshold image
     :return Straightened image
     """
@@ -152,10 +164,11 @@ def straighten_thresh(image):
 
 def extract_image(image):
     """
-  Returns borderless image
-  :param image : Image with border
-  :returns borderless image
-  """
+    Returns borderless image
+
+    :param image : Image with border
+    :returns borderless image
+    """
     img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     re, img = cv2.threshold(img, 160, 255, cv2.THRESH_BINARY)
     cont, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -175,15 +188,15 @@ def extract_image(image):
     cv2.drawContours(mask, [biggest_cont], -1, (255,255,255), thickness=5)
     # cv2.fillPoly(mask, pts=[biggest_cont], color=(255,255,255))
     cv2.fillPoly(mask, pts=[biggest_cont], color=(0,0,0))
-    display(mask,0.35,0.35)
+    # display(mask,0.35,0.35)
     # display(image,0.35,0.35)
     sub_image = cv2.bitwise_or(image,mask)
     # print(sub_image)
-    display(sub_image,0.35,0.35)
+    # display(sub_image,0.35,0.35)
     sub_image = detect_orientation(sub_image)
     sub_image = straighten(sub_image)
     # display(sub_image, 0.35, 0.35)
-    print(sub_image.shape)
+    # print(sub_image.shape)
 
     # print(truthy.all())
 
@@ -198,22 +211,32 @@ def extract_image(image):
     return sub_image
 
 
-def plot_before_after(before, after):
+def plot_before_after(before, after, image_title, show = True, save = False):
     """
+    Plot describing the input_image and pre processed image
+
+    :param save: If set to true saves the plot
+    :param show: If set to true show the plot
     :param before: Before correction image
     :param after: After correction image
     """
     import matplotlib.pyplot as plt
+    print('=' * 40 + '\tPreprocessing Results\t' + '=' * 40)
     plt.figure(figsize=(12, 15))
     plt.subplot(1, 2, 1)
     plt.imshow(cv2.cvtColor(before, cv2.COLOR_BGR2RGB))
     # plt.axis('off')
     plt.grid(True)
-    plt.title(label="Before : ")
+    plt.title(label="Before : "+image_title)
 
     plt.subplot(1, 2, 2)
     plt.imshow(cv2.cvtColor(after, cv2.COLOR_BGR2RGB))
     # plt.axis('off')
     plt.grid(True)
-    plt.title(label='After : ')
-    plt.show()
+    plt.title(label="After : "+image_title)
+    if save:
+        name = image_title + '_results.jpg'
+        plt.savefig(name)
+        print('[DEBUG]: Results saved!')
+    if show:
+        plt.show()

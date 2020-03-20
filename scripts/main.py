@@ -4,15 +4,32 @@ def preprocess(PATH):
     return image
 
 
-def extract_fields(image):
+def extract_fields(x):
+    print(x)
     import os
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'json\\Handwritting Recognission-2cf8babac416.json'
+    import io
+    from google.cloud import vision
+    print(os.getcwd())
+    image_path = os.getcwd()+'\\'+x
+    print(image_path)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '..\\json\\Handwritting Recognission-2cf8babac416.json'
+    PROJECT_ID = 'handwritting-recognission'
+    SESSION_ID = '123'
 
-    # Code by Mayuri
-    # PROJECT_ID = 'handwritting-recognission'
-    # SESSION_ID = '123'
-    return fields
+    def image_to_desciption_text(image_path):
+        print(image_path)
+        with io.open(image_path, 'rb') as image_file:
+            print('debug1')
+            content = image_file.read()
+        print('debug2')
+        client = vision.ImageAnnotatorClient()
+        image = vision.types.Image(content=content)
+        response = client.text_detection(image=image)
+        return response.text_annotations[0].description
 
+    print(image_to_desciption_text(image_path))
+    # return fields
+    return None
 
 def convert_to_csv(fields):
     import csv
@@ -29,9 +46,12 @@ def convert_to_csv(fields):
     print(df)
 
 
-import time
-PATH = '..\\images\\v2\\Lightroom\\out1.pdf_rot+scaled+border.jpg'
-start = time.time()
-image = preprocess(PATH)
-# fields = extract_fields(image)
-# convert_to_csv(fields)
+import os
+
+PATH = '..\\images\\v2\\Lightroom\\out1.pdf_scaled_80.jpg'
+# image_name = preprocess(PATH)
+# print(os.getcwd())
+image_name = "dump_output.jpg"
+extract_fields(image_name)
+# extract_fields(image,img_folder_path)
+
