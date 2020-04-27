@@ -26,10 +26,14 @@ def preprocess(image_name):
     value = scripts.background_removal.detect_border_color(image)
     if value:
         image = scripts.background_removal.cropped(image, value)
-    scripts.preprocessing.plot_before_after(image_org, image,  image_title = image_name,save= False,show = False)
+    scripts.preprocessing.plot_before_after(image_org, image,  image_title = image_name,save= False,show = True)
+
+
+    image = cv2.resize(image,dsize=(1056,1425))
 
     import os
     print(os.getcwd())
-    name = 'dump_output.jpg'
+    name = 'dump_output1.jpg'
     cv2.imwrite(name,image)
+    print(image.shape) #(1736, 1286, 3),(1652, 1225, 3),
     return name
