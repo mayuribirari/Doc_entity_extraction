@@ -5,23 +5,22 @@ def preprocess(PATH):
 
 
 def extract_fields(x):
-    print(x)
     import os
     import io
     from google.cloud import vision
-    print(os.getcwd())
+    # print(os.getcwd())
     image_path = os.getcwd()+'\\'+x
-    print(image_path)
+    # print(image_path)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '..\\json\\Handwritting Recognission-2cf8babac416.json'
     PROJECT_ID = 'handwritting-recognission'
     SESSION_ID = '123'
 
     def image_to_desciption_text(image_path):
-        print(image_path)
+        # print(image_path)
         with io.open(image_path, 'rb') as image_file:
-            print('debug1')
+            # print('debug1')
             content = image_file.read()
-        print('debug2')
+        # print('debug2')
         client = vision.ImageAnnotatorClient()
         image = vision.types.Image(content=content)
         response = client.text_detection(image=image)
@@ -48,10 +47,10 @@ def convert_to_csv(fields):
 
 import os
 
-PATH = '..\\images\\v2\\Lightroom\\out1.pdf_scaled_80.jpg'
-# image_name = preprocess(PATH)
-# print(os.getcwd())
-image_name = "dump_output.jpg"
-extract_fields(image_name)
+PATH = '..\\images\\v2\\Lightroom\\out1.pdf_right_skewed8.JPG'
+image_name = preprocess(PATH)
+print(os.getcwd(),print(type(image_name)))
+image_name = "dump_output1.jpg"
+# extract_fields(image_name)
 # extract_fields(image,img_folder_path)
 
