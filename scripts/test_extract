@@ -1,0 +1,35 @@
+import cv2
+import os
+import io
+from google.cloud import vision
+
+img_path = 'dump_output.jpg'
+# img_path = 'D:\\Hvantage\\Doc_entity_extraction\\images\\v1\\h.JPG'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '..\\json\\Handwritting Recognission-2cf8babac416.json'
+PROJECT_ID = 'handwritting-recognission'
+SESSION_ID = '123'
+
+def image_to_desciption_text(image_path):
+    with io.open(image_path, 'rb') as image_file:
+        content = image_file.read()
+    client = vision.ImageAnnotatorClient()
+    image = vision.types.Image(content=content)
+    # response = client.text_detection(image=image)
+    response = client.document_text_detection(image=image)
+    return response
+
+
+
+f = image_to_desciption_text(img_path).text_annotations
+print(f)
+with open('text_from_API.txt','w',encoding='UTF-8') as file:
+    file.write(f[0].description)
+coordinates = []
+for i in f[1:]:
+    coordinates.append(((i.bounding_poly.vertices[1].x,i.bounding_poly.vertices[1].y),(i.bounding_poly.vertices[3].x, i.bounding_poly.vertices[3].y)))
+    # print(i.description)
+image = cv2.imread(img_path)
+for i in coordinates:
+    img_rect = cv2.rectangle(image,i[0],i[1],color=0,thickness=2,lineType=-1)
+    cv2.imshow("Rectangles", img_rect)
+    cv2.waitKey(0)
