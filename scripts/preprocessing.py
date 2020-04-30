@@ -1,8 +1,8 @@
 import cv2
-import pytesseract
+from pytesseract.pytesseract import image_to_osd
 import re
 import numpy as np
-
+f = image_to_osd
 
 def display(image, fx=1, fy=1):
     """Function to display image
@@ -27,7 +27,7 @@ def detect_orientation(image):
     import time
     a = time.time()
     custom_oem_psm_config = r'--oem 1--psm 7'
-    newdata = pytesseract.image_to_osd(image, config=custom_oem_psm_config)
+    newdata = f(image, config=custom_oem_psm_config)
     rotation = int(re.search('(?<=Rotate: )\\d+', newdata).group(0))
     print("[DEBUG]: Rotation degrees : ", rotation)
     print("[DEBUG]: Time taken in rotation op. is :", time.time()-a)
@@ -97,71 +97,6 @@ def straighten_thresh(image):
     # print("Straightening angle : ", angle)
     return rotated
 
-
-# def extract_image(image, thresh_value = 190):
-#     """
-#     Returns borderless image
-#     :param image : Image with border
-#     :returns borderless image
-#     """
-#
-#     img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#     _, img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
-#     cont, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-#     area = 0
-#     biggest_cont = cont[0][0]
-#
-#     for i in cont:
-#         area1 = cv2.contourArea(i)
-#         if area1 > area:
-#             area = area1
-#             biggest_cont = i
-#
-#     mask = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
-#     cv2.drawContours(mask, [biggest_cont], -1, (255, 255, 255))
-#
-#     sub_image = img - mask
-#     st_sub_images = straighten_thresh(sub_image)
-#     display(st_sub_images,0.5,0.5)
-#
-#
-#     l, b = st_sub_images.shape
-#     PERCENTAGE = 3
-#     l = (l * PERCENTAGE) // 100
-#     b = (b * PERCENTAGE) // 100
-#     print(l, b)
-#     c1 = st_sub_images[:, :b]
-#     c2 = st_sub_images[:l, :]
-#     display(c1)
-#     display(c2)
-#
-#     values1, counts1 = np.unique(c1, return_counts=True)
-#     values2, counts2 = np.unique(c2, return_counts=True)
-#     if values1[np.argmax(counts1)] == values2[np.argmax(counts2)]:
-#         value = values1[np.argmax(counts1)]
-#         print(value)
-#         cont_x = [i for i in range(st_sub_images.shape[0]) if set(st_sub_images[i]) != {value}]
-#         first_x, last_x = cont_x[1], cont_x[-1]
-#
-#         st_sub_images_trans = np.transpose(st_sub_images)
-#         cont_y = [i for i in range(st_sub_images_trans.shape[0]) if set(st_sub_images_trans[i]) != {value}]
-#         first_y, last_y = cont_y[1], cont_y[-1]
-#
-#         img_cropped: np.ndarray = st_sub_images[first_x:last_x, first_y:last_y]
-#         display(img_cropped, 0.35, 0.35)
-#         print(img_cropped.shape)
-#         return img_cropped
-#
-#     else:
-#         thresh = cv2.threshold(st_sub_images, 1, 255, cv2.THRESH_BINARY)[1]
-#         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-#         if len(contours) == 1:
-#             cnt = contours[0]
-#             x, y, w, h = cv2.boundingRect(cnt)
-#             st_sub_images = st_sub_images[y:y + h, x:x + w]
-#         return st_sub_images
-
-
 def extract_image(image):
     """
     Returns borderless image
@@ -183,31 +118,12 @@ def extract_image(image):
             area = area1
             biggest_cont = i
 
-    # mask = np.zeros((image.shape[0], image.shape[1],3), dtype=np.uint8)
     mask = np.full((image.shape[0], image.shape[1],3), 255 ,dtype=np.uint8)
     cv2.drawContours(mask, [biggest_cont], -1, (255,255,255), thickness=5)
-    # cv2.fillPoly(mask, pts=[biggest_cont], color=(255,255,255))
     cv2.fillPoly(mask, pts=[biggest_cont], color=(0,0,0))
-    # display(mask,0.35,0.35)
-    # display(image,0.35,0.35)
     sub_image = cv2.bitwise_or(image,mask)
-    # print(sub_image)
-    # display(sub_image,0.35,0.35)
     sub_image = detect_orientation(sub_image)
     sub_image = straighten(sub_image)
-    # display(sub_image, 0.35, 0.35)
-    # print(sub_image.shape)
-
-    # print(truthy.all())
-
-    # st_sub_images = straighten_thresh(cv2.cvtColor(sub_image,cv2.COLOR_RGB2GRAY))
-    # thresh = cv2.threshold(st_sub_images, 120, 255, cv2.THRESH_BINARY)[1]
-    # contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    # if len(contours) == 1:
-    #     cnt = contours[0]
-    #     x, y, w, h = cv2.boundingRect(cnt)
-    #     sub_image = sub_image[y:y + h, x:x + w]
-    # plot_before_after(image,sub_image)
     return sub_image
 
 
@@ -221,19 +137,18 @@ def plot_before_after(before, after, image_title, show = True, save = False):
     :param after: After correction image
     """
     import matplotlib.pyplot as plt
-    print('=' * 40 + '\tPreprocessing Results\t' + '=' * 40)
     plt.figure(figsize=(12, 15))
     plt.subplot(1, 2, 1)
     plt.imshow(cv2.cvtColor(before, cv2.COLOR_BGR2RGB))
     # plt.axis('off')
     plt.grid(True)
-    plt.title(label="Before : "+image_title)
+    plt.title(label="Before : ")
 
     plt.subplot(1, 2, 2)
     plt.imshow(cv2.cvtColor(after, cv2.COLOR_BGR2RGB))
     # plt.axis('off')
     plt.grid(True)
-    plt.title(label="After : "+image_title)
+    plt.title(label="After : ")
     if save:
         name = image_title + '_results.jpg'
         plt.savefig(name)

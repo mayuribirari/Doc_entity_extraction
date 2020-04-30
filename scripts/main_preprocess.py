@@ -6,6 +6,7 @@ from pytesseract.pytesseract import TesseractError
 
 
 def preprocess(image_name):
+    print('-' * 40 + '\tPreprocessing Begins\t' + '-' * 40)
     image_org = cv2.imread(image_name)
     image = np.copy(image_org)
     flag = False
@@ -16,9 +17,6 @@ def preprocess(image_name):
         flag = True
     image = scripts.preprocessing.straighten(image)
     image = scripts.preprocessing.extract_image(image)
-    # print(image.shape)
-    # scripts.preprocessing.display(image,0.35,0.35)
-    # cv2.imwrite('output_rgb.jpg',image)
     if flag:
         image = scripts.preprocessing.detect_orientation(image)
         image = scripts.preprocessing.straighten(image)
@@ -26,14 +24,17 @@ def preprocess(image_name):
     value = scripts.background_removal.detect_border_color(image)
     if value:
         image = scripts.background_removal.cropped(image, value)
-    scripts.preprocessing.plot_before_after(image_org, image,  image_title = image_name,save= False,show = True)
+    master_doc_shape = (1056,1425)
+    image = cv2.resize(image,dsize=master_doc_shape)
+    print("[DEBUG]: Resizing to {0}, i.e. master image's aspect ratio".format(master_doc_shape))
 
+    scripts.preprocessing.plot_before_after(image_org, image, image_title=image_name, save=False, show=True)
 
-    image = cv2.resize(image,dsize=(1056,1425))
-
-    import os
-    print(os.getcwd())
+    # import os
+    # print(os.getcwd())
     name = 'dump_output1.jpg'
+    print('[DEBUG]: Saving a local copy of the preprocessed image')
     cv2.imwrite(name,image)
-    print(image.shape) #(1736, 1286, 3),(1652, 1225, 3),
+    print('-' * 40 + '\tPreprocessing Ends\t' + '-' * 40)
+    # print(image.shape) #(1736, 1286, 3),(1652, 1225, 3),
     return name

@@ -9,7 +9,7 @@ from google.cloud import vision
 image = cv2.imread('dump_output1.jpg')
 image_copy = image.copy()
 image_org = image.copy()
-img_path = 'Concat_test.jpg'
+concat_img_path = 'Concat_test.jpg'
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '..\\json\\Handwritting Recognission-2cf8babac416.json'
 PROJECT_ID = 'handwritting-recognission'
 SESSION_ID = '123'
@@ -20,31 +20,31 @@ cropping = False
 sel_rect_endpoint = None
 # cv2.namedWindow("image", cv2.WINDOW_AUTOSIZE)
 
-def roi_selection(event, x, y, flags, param):
-    global ROI_coordinates, now_pt1, now_pt2, sel_rect_endpoint, cropping, undo
-
-    if event == cv2.EVENT_LBUTTONDOWN:
-        undo.append(image.copy())
-        cropping = True
-        now_pt1 = (x, y)
-
-    elif event == cv2.EVENT_MOUSEMOVE and cropping:
-        sel_rect_endpoint = (x, y)
-
-    elif event == cv2.EVENT_LBUTTONUP:
-        now_pt2 = (x, y)
-        cropping = False
-        sel_rect_endpoint = None
-        if now_pt2 != now_pt1:
-            if now_pt1[1] > now_pt2[1]:
-                ROI_coordinates.append((now_pt2, now_pt1))
-            else:
-                ROI_coordinates.append((now_pt1, now_pt2))
-        cv2.rectangle(image, now_pt1, now_pt2, (0, 0, 255), 2)
-        cv2.imshow("image", image)
-        # print(ROI_coordinates)
-
-cv2.setMouseCallback("image", roi_selection)
+# def roi_selection(event, x, y, flags, param):
+#     global ROI_coordinates, now_pt1, now_pt2, sel_rect_endpoint, cropping, undo
+#
+#     if event == cv2.EVENT_LBUTTONDOWN:
+#         undo.append(image.copy())
+#         cropping = True
+#         now_pt1 = (x, y)
+#
+#     elif event == cv2.EVENT_MOUSEMOVE and cropping:
+#         sel_rect_endpoint = (x, y)
+#
+#     elif event == cv2.EVENT_LBUTTONUP:
+#         now_pt2 = (x, y)
+#         cropping = False
+#         sel_rect_endpoint = None
+#         if now_pt2 != now_pt1:
+#             if now_pt1[1] > now_pt2[1]:
+#                 ROI_coordinates.append((now_pt2, now_pt1))
+#             else:
+#                 ROI_coordinates.append((now_pt1, now_pt2))
+#         cv2.rectangle(image, now_pt1, now_pt2, (0, 0, 255), 2)
+#         cv2.imshow("image", image)
+#         # print(ROI_coordinates)
+#
+# cv2.setMouseCallback("image", roi_selection)
 
 def image_to_desciption_text(image_path):
     with io.open(image_path, 'rb') as image_file:
@@ -56,10 +56,6 @@ def image_to_desciption_text(image_path):
     return response.text_annotations[0].description
 
 def pad_images_to_same_size(images):
-    """
-    :param images: sequence of images
-    :return: list of images padded so that all images have same width and height (max width and height are used)
-    """
     width_max = 0
     height_max = 0
     for img in images:
@@ -80,6 +76,7 @@ def pad_images_to_same_size(images):
         images_padded.append(img_padded)
 
     v_stack = cv2.vconcat(images_padded)
+    print('[DEBUG]: Image stacking completed')
     return v_stack
 
 if __name__  =='__main__':
@@ -87,7 +84,7 @@ if __name__  =='__main__':
                 "Initial deposit","Balance downpayment","purchase price","date prepared")
     x_y = (((267,151),(972,172)),((377,175),(955,191)),((259,358),(748,376)),((263,441),(749,463)),
            ((866,577),(1054,601)),((860,1251),(1052,1272)),((858,1291),(1052,1309)),((126,113),(281,137)))
-    print(len(x_y),len(entities))
+    # print(len(x_y),len(entities))
     assert len(entities)==len(x_y)
     # while True:
     #     if not cropping:
@@ -124,26 +121,27 @@ if __name__  =='__main__':
 
     for i in x_y:
         images_container.append(image_org[i[0][1]:i[1][1], i[0][0]:i[1][0]])
-
+    print('[DEBUG]: ROIs extracted')
     v_stacked = pad_images_to_same_size(images_container)
     cv2.imshow("Padded_concat", v_stacked)
     cv2.imwrite('Concat_test.jpg',v_stacked)
-    cv2.waitKey(0 )
+    print('[DEBUG]: Concat_stacking saved successfully')
+    cv2.waitKey(0)
 
 
-    text_in_img:str = image_to_desciption_text(img_path)
+    text_in_img:str = image_to_desciption_text(concat_img_path)
 
     text_in_img_split = text_in_img.splitlines()
-    print(text_in_img_split,len(text_in_img_split))
+    # print(text_in_img_split,len(text_in_img_split))
 
     assert len(entities) == len(text_in_img_split)
     with open('..\\csv\\Extracted_Entities.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(entities)
         writer.writerow(text_in_img_split)
-    df = pd.read_csv('Extracted_Entities.csv')
-    print(df)
+    print('-' * 40)
+    print('[DEBUG]: CSV file created successfully')
+    print('-' * 40)
 
-    print('-'*40)
-    print('-'*40)
-    print(text_in_img_split)
+
+    # print(text_in_img_split)

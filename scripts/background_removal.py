@@ -28,9 +28,6 @@ def cropped(img,value):
     # print(img.shape)
     img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     img_gray = cv2.threshold(img_gray,127,255,type = cv2.THRESH_BINARY)[1]
-    # print(type(img_gray),img_gray.shape)
-    # print(img_gray)
-    # display(img_gray,0.35,0.35)
     cont_x = [i for i in range(img_gray.shape[0]) if set(img_gray[i]) != {value}]
     first_x,last_x =cont_x[0],cont_x[-1]
 
@@ -39,14 +36,5 @@ def cropped(img,value):
     first_y,last_y =cont_y[0],cont_y[-1]
 
     img_cropped : np.ndarray = img[first_x:last_x,first_y:last_y]
-    # display(img_cropped,0.35,0.35)
-    # img_cropped = cv2.cvtColor(img_cropped,cv2.COLOR_GRAY2RGB)
-    # display(img_cropped,0.35,0.35)
-    # print(img_cropped.shape)
+    print('[DEBUG]: Original image shape :',img.shape,'Removed Border image shape :',img_cropped.shape)
     return img_cropped
-
-# value = border_color(img)
-# img2 = cropped(img,value)
-# display(img2,0.35,0.35)
-# value = border_color(img2)
-# display(cropped(img2,value),0.35,0.35)
