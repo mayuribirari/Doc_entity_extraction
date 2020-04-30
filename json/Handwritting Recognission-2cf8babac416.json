@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "handwritting-recognission",
+  "private_key_id": "2cf8babac416d9aa026059d1696452c6c1a5e043",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+NQFKH5SWKaTE\nKaALcihh6JsPwV6mZZVcbgsAzl2dp/DuxtcCS0d2erUJXF4hc+bXBWHfs94mq/Rs\nt5SDSd4CmF3/p6XjkITsVmcYRw5Mn4G1ylYcSBdVXRAnjvhXDMKD/FFMWyWYIbzw\nbhQusKSEYkdOC/E7ZMSovqCvBuiKN/j15vVBxuLXHJG3m2LgWXLw5QJjFM7ZpZ2h\nhMxEDxb0VoIzYMhHQ6Q407mSt9ecs6ZMRIJL5nIZ7Z3reB3btDxPrXsNeTFbGMXw\nhWyHV3iTAwOWcJMS1PL0PEIoNP1HajfoIxXcraQp4JiyZ9jTq5AJ2OClzHgPUiDT\nu7pE5ktzAgMBAAECggEAM+ri6bkaBSzjwPl9qnIkDKmBnbjR3YhvzvVognVRv0VG\ncd6LdKBYpsHSpXX1aZspwLpC311Iv3SDOKOZYYaplzrAuZYopSde6OWiqVFH2WlW\nbekHPRv+ZnoK/Uk8hwJAG+ekxzs/1TksSdI6Jw5nMY1j2i1PUL9uIIM799piYctw\n/ri3iVqAR9FJ+cYmHV0I88ERgPJJ2rBIW70zA2peLWB3T1klC7LR/aczx1LjLWJ8\n9VGjWrzW2BMU+2xteu9yx+HgqeLAzO3JaCBLywNbOhNrqW0VkRLP8Sd0fw7+dq1w\n3rpiGv8po4MIJzxzZKBSCXTjy4wjVLduFirfPcLlYQKBgQD56ToVWg4PmcsGAX9O\nImrxNPWREP9fEQU4ofk6+KZewnC3K1Xi84tf1gVl+qRy4W37raRgEn9YH2RaCDu8\nw130ijBzeqAHAnIw5D9Y8tZnn6ivIw/EralTaJGksxAmXS7pZ8yFuYOsnZQQoTL/\noIIegzjGUbC2rWXBOYYMF54yUwKBgQDC12K/bstpvg0MuujBtceMTkOAQs9Sykqz\nSu1HUBj6Xz1Ue5p+Gt8s+UgxFUAkwDp978ufN5by3kfKyfp8exrCI5Kskv4bM+nY\nfTn9+wZs/8PypwPxbt/5ylenHgMmwpA0iCXzjoNZyie+OQ22qNKjd4OgtWFfU5ZW\n3Tw4xMKeYQKBgQDblnvL4RozyQ2kVFJ45DMViFQxyD6rWLg+v8vPbkY5Qx5pQ/Gu\nfhK7/cE2jxpKOxw5paSmKfqtAsBZf5yFyyBWS8ow3dGY9yRBI30p+g48dQRyBxvG\n1FTRDjPTBOeu3ffnbKY/5fb2CGvehNXb2Twb9W9Aiuz8RrX/Jz1KiMIfMwKBgGkP\nTpW+njxUWCEHH75j0EedY9RjMfuITKNEwZD0ZaOLezx0sadRwgk0GXMt7Dpk1KVX\nico+ZUxsAvYb1s8Mai9IkywuzonIgk1TqNOEacCYYQYUfJHQoUDFlGHuUvCxdKR+\nzUf5DmZ6FNgDV5uoiHvQU89yPiDyp1wLSw+pOO/BAoGAIIWPOz+yehm6z1v54T3x\nSVEoxkznfcjL3fBTGZvZNr4rBpP6/FcTq/owCbmB9ycjm+/9lnHGFGFnnK8VFnl3\nUEBkBPaL2tGtCqyBAiuGPFjMExdqwuwibedN4YRh95fzRfzC6/43rdIMmqUPGK9a\njfSfpxGawf/IHwME3+7kDIs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "handwriting@handwritting-recognission.iam.gserviceaccount.com",
+  "client_id": "102120482999897398542",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/handwriting%40handwritting-recognission.iam.gserviceaccount.com"
+}
