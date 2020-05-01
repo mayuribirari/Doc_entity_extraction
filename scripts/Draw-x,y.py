@@ -4,7 +4,7 @@ import io
 import csv
 import pandas as pd
 from google.cloud import vision
-
+import logging
 
 image = cv2.imread('dump_output1.jpg')
 image_copy = image.copy()
