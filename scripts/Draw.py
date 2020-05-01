@@ -2,6 +2,7 @@ import cv2
 import os
 import io
 from google.cloud import vision
+import logging
 
 
 image = cv2.imread('dump_output.jpg')
