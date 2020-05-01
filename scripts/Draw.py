@@ -106,9 +106,9 @@ if __name__  =='__main__':
             # print(ROI_coordinates,undo)
 
         elif key == ord('a'):
-            print('[DEBUG] : Accepted ROIs!')
+            logging.info(' Accepted ROIs!')
             for i in ROI_coordinates:
-                print('[DEBUG] :', i[0][1], i[1][1], i[0][0], i[1][0])
+                logging.info('[DEBUG] : %s', i[0][1], i[1][1], i[0][0], i[1][0])
             break
 
     cv2.destroyAllWindows()
