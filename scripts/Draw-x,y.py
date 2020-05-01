@@ -2,7 +2,7 @@ import cv2
 import os
 import io
 import csv
-import pandas as pd
+
 from google.cloud import vision
 import logging
 
@@ -83,40 +83,9 @@ if __name__  =='__main__':
     entities = ("Buyer name","Property address","Seller Brokerage Firm ","Buyers brokerage firm",
                 "Initial deposit","Balance downpayment","purchase price","date prepared")
     x_y = (((267,151),(972,172)),((377,175),(955,191)),((259,358),(748,376)),((263,441),(749,463)),
-           ((866,577),(1054,601)),((860,1251),(1052,1272)),((858,1291),(1052,1309)),((126,113),(281,137)))
+           ((876,577),(1054,601)),((881,1251),(1052,1272)),((876,1285),(1052,1309)),((126,113),(281,137)))
     # print(len(x_y),len(entities))
     assert len(entities)==len(x_y)
-    # while True:
-    #     if not cropping:
-    #         cv2.imshow('image', image)
-    #     elif cropping and sel_rect_endpoint:
-    #         rec = image.copy()
-    #         cv2.rectangle(rec, now_pt1, sel_rect_endpoint, (0, 0, 255), 2)
-    #         cv2.imshow('image', rec)
-    #
-    #     key = cv2.waitKey(1) & 0xFF
-    #
-    #     if key == ord('q'):
-    #         exit()
-    #
-    #     elif key == ord('u'):
-    #         image = undo.pop()
-    #         ROI_coordinates.pop()
-    #         cv2.imshow('image', image)
-    #
-    #     elif key == ord('c'):
-    #         image = image_copy.copy()
-    #         ROI_coordinates = []
-    #         undo = []
-    #         # print(ROI_coordinates,undo)
-    #
-    #     elif key == ord('a'):
-    #         print('[DEBUG] : Accepted ROIs!')
-    #         for i in ROI_coordinates:
-    #             print('[DEBUG] :', i[0][1], i[1][1], i[0][0], i[1][0])
-    #         break
-
-    # cv2.destroyAllWindows()
     images_container = []
 
     for i in x_y:
@@ -139,9 +108,9 @@ if __name__  =='__main__':
         writer = csv.writer(file)
         writer.writerow(entities)
         writer.writerow(text_in_img_split)
-    print('-' * 40)
+    # print('-' * 40)
     logging.info('CSV file created successfully')
-    print('-' * 40)
+    # print('-' * 40)
 
 
     # print(text_in_img_split)

@@ -36,5 +36,5 @@ def cropped(img,value):
     first_y,last_y =cont_y[0],cont_y[-1]
 
     img_cropped : np.ndarray = img[first_x:last_x,first_y:last_y]
-    logging.info('Original image shape :',img.shape,'Removed Border image shape :',img_cropped.shape)
+    logging.info('Original image shape :{0}, Removed Border image shape :{1}'.format(img.shape,img_cropped.shape))
     return img_cropped

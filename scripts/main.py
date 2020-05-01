@@ -47,10 +47,10 @@ def preprocess(PATH):
 
 import os
 import logging
-logging.basicConfig(filename="newfile.log",level=logging.INFO, filemode='a',format='%(asctime)s:%(levelname)s:%(filename)s:%(message)s') 
+logging.basicConfig(filename="newfile.log",level=logging.INFO, filemode='a',format='%(asctime)s:%(levelname)s:%(filename)s:%(message)s')
 
 
-logging.info('Logging Start')
+logging.info('------------ Logging Start ------------------')
 
 # PATH = '..\\images\\v2\\Lightroom\\out1.pdf_border_black.jpg'
 # PATH = '..\\images\\v2\\Lightroom\\out1.pdf_rot+scaled.jpg'
@@ -59,10 +59,10 @@ logging.info('Logging Start')
 # PATH = '..\\images\\v2\\Lightroom\\out1.pdf_normal.jpg'
 # PATH = '..\\images\\v2\\Lightroom\\out1.pdf_right_skewed8.JPG'
 # PATH = '..\\images\\v2\\Lightroom\\out1.pdf_scaled_80.jpg'
-# PATH = '..\\images\\v2\\Lightroom\\out1.pdf_90+border.jpg'
-PATH = '..\\images\\v2\\out8.pdf.jpg'
+PATH = '..\\images\\v2\\Lightroom\\out1.pdf_90+border.jpg'
+# PATH = '..\\images\\v2\\out8.pdf.jpg'
 name=os.path.basename(PATH)
-logging.info('File Name: ' +str(name))
+logging.info('File Name: %s' +str(name))
 
 # PATH = '..\\images\\v3\\r0000_00.png'
 # PATH = '..\\images\\v3\\r0100_00.png'
@@ -74,4 +74,4 @@ image_name = "dump_output1.jpg"
 # extract_fields(image_name)
 # extract_fields(image,img_folder_path)
 
-logging.info('Logging End')
+logging.info('------------------ Logging End -----------------------')

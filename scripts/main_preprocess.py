@@ -21,8 +21,8 @@ def preprocess(image_name):
     if flag:
         image = scripts.preprocessing.detect_orientation(image)
         image = scripts.preprocessing.straighten(image)
-    image=scripts.preprocessing.sharpen_image(image)
-    image=scripts.preprocessing.gamma_correction(image)
+    # image=scripts.preprocessing.sharpen_image(image)
+    # image=scripts.preprocessing.gamma_correction(image)
     ### EXTRA SPACE REMOVAL ###
     value = scripts.background_removal.detect_border_color(image)
     if value:
