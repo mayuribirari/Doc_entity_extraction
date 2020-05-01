@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from scripts.preprocessing import display,detect_orientation
-
+import logging
 # img = cv2.imread('..\\images\\v2\\Lightroom\\out1.pdf_rot+scaled.jpg')
 
 def detect_border_color(img):
@@ -21,7 +21,7 @@ def detect_border_color(img):
         # print(type(values1[np.argmax(counts1)]))
         return values1[np.argmax(counts1)]
     else:
-        print("[DEBUG]: Not cropping extra space!")
+        logging.info("Not cropping extra space!")
         return None
 
 def cropped(img,value):
@@ -36,5 +36,5 @@ def cropped(img,value):
     first_y,last_y =cont_y[0],cont_y[-1]
 
     img_cropped : np.ndarray = img[first_x:last_x,first_y:last_y]
-    print('[DEBUG]: Original image shape :',img.shape,'Removed Border image shape :',img_cropped.shape)
+    logging.info('Original image shape :',img.shape,'Removed Border image shape :',img_cropped.shape)
     return img_cropped
