@@ -76,7 +76,7 @@ def pad_images_to_same_size(images):
         images_padded.append(img_padded)
 
     v_stack = cv2.vconcat(images_padded)
-    print('[DEBUG]: Image stacking completed')
+    logging.info('Image stacking completed')
     return v_stack
 
 if __name__  =='__main__':
@@ -121,11 +121,11 @@ if __name__  =='__main__':
 
     for i in x_y:
         images_container.append(image_org[i[0][1]:i[1][1], i[0][0]:i[1][0]])
-    print('[DEBUG]: ROIs extracted')
+    logging.info('ROIs extracted')
     v_stacked = pad_images_to_same_size(images_container)
     cv2.imshow("Padded_concat", v_stacked)
     cv2.imwrite('Concat_test.jpg',v_stacked)
-    print('[DEBUG]: Concat_stacking saved successfully')
+    logging.info('Concat_stacking saved successfully')
     cv2.waitKey(0)
 
 
@@ -140,7 +140,7 @@ if __name__  =='__main__':
         writer.writerow(entities)
         writer.writerow(text_in_img_split)
     print('-' * 40)
-    print('[DEBUG]: CSV file created successfully')
+    logging.info('CSV file created successfully')
     print('-' * 40)
 
 
