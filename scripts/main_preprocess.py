@@ -4,6 +4,7 @@ import scripts.preprocessing
 import numpy as np
 import scripts.background_removal
 from pytesseract.pytesseract import TesseractError
+#pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 
 def preprocess(image_name):

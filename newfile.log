@@ -1,0 +1,33 @@
+2020-05-01 13:06:25,842:INFO:main.py:Logging Start
+2020-05-01 13:06:25,842:INFO:main.py:File Name: %sscanned1.jpg
+2020-05-01 13:06:46,561:INFO:preprocessing.py:Rotation degrees : 0
+2020-05-01 13:06:46,561:INFO:preprocessing.py:Time taken in rotation op. is : 17.11033868789673
+2020-05-01 13:06:47,893:INFO:preprocessing.py:Straightening angle : 0.0
+2020-05-01 13:07:04,946:INFO:preprocessing.py:Rotation degrees : 0
+2020-05-01 13:07:04,946:INFO:preprocessing.py:Time taken in rotation op. is : 16.76806926727295
+2020-05-01 13:07:06,669:INFO:preprocessing.py:Straightening angle : -0.01667022705078125
+2020-05-01 13:07:08,493:INFO:preprocessing.py:Image Sharpened
+2020-05-01 13:07:09,072:INFO:preprocessing.py:Gamma Correction Applied
+2020-05-01 13:08:07,643:INFO:main.py:Logging Start
+2020-05-01 13:08:07,643:INFO:main.py:File Name: %sscanned1.jpg
+2020-05-01 13:08:32,552:INFO:preprocessing.py:Rotation degrees : 0
+2020-05-01 13:08:32,552:INFO:preprocessing.py:Time taken in rotation op. is : 16.854132175445557
+2020-05-01 13:08:33,904:INFO:preprocessing.py:Straightening angle : 0.0
+2020-05-01 13:08:51,293:INFO:preprocessing.py:Rotation degrees : 0
+2020-05-01 13:08:51,293:INFO:preprocessing.py:Time taken in rotation op. is : 17.086020708084106
+2020-05-01 13:08:52,793:INFO:preprocessing.py:Straightening angle : -0.01667022705078125
+2020-05-01 13:08:53,367:INFO:preprocessing.py:Image Sharpened
+2020-05-01 13:08:53,569:INFO:preprocessing.py:Gamma Correction Applied
+2020-05-01 13:10:21,665:INFO:main.py:Logging Start
+2020-05-01 13:10:21,666:INFO:main.py:File Name: %sscanned1.jpg
+2020-05-01 13:10:50,782:INFO:preprocessing.py:Rotation degrees : 0
+2020-05-01 13:10:50,782:INFO:preprocessing.py:Time taken in rotation op. is : 22.56440567970276
+2020-05-01 13:10:52,536:INFO:preprocessing.py:Straightening angle : 0.0
+2020-05-01 13:11:10,158:INFO:preprocessing.py:Rotation degrees : 0
+2020-05-01 13:11:10,158:INFO:preprocessing.py:Time taken in rotation op. is : 17.309937715530396
+2020-05-01 13:11:11,500:INFO:preprocessing.py:Straightening angle : -0.01667022705078125
+2020-05-01 13:11:12,018:INFO:preprocessing.py:Image Sharpened
+2020-05-01 13:11:12,284:INFO:preprocessing.py:Gamma Correction Applied
+2020-05-01 13:11:29,028:INFO:main_preprocess.py:Resizing to (1056, 1425), i.e. master image's aspect ratio
+2020-05-01 13:35:23,053:INFO:main_preprocess.py:Saving a local copy of the preprocessed image
+2020-05-01 13:35:23,347:INFO:main.py:Logging End

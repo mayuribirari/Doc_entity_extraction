@@ -1,6 +1,10 @@
 import cv2
 import logging
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
+
 from pytesseract.pytesseract import image_to_osd
+
 import re
 import numpy as np
 f = image_to_osd
@@ -30,8 +34,8 @@ def detect_orientation(image):
     custom_oem_psm_config = r'--oem 1--psm 7'
     newdata = f(image, config=custom_oem_psm_config)
     rotation = int(re.search('(?<=Rotate: )\\d+', newdata).group(0))
-    logging.info("Rotation degrees : ", rotation)
-    logging.info("Time taken in rotation op. is :", time.time()-a)
+    logging.info("Rotation degrees : %s", rotation)
+    logging.info("Time taken in rotation op. is : %s", time.time()-a)
     return rotate_img(image, rotation)
 
 
@@ -51,7 +55,7 @@ def rotate_img(image, degrees):
     elif degrees == 0:
         return image
     else:
-        logging.info("DEGREE = ", degrees)
+        logging.info("DEGREE = %s", degrees)
 
 
 def straighten(image):
@@ -74,7 +78,7 @@ def straighten(image):
     center = (w // 2, h // 2)
     M = cv2.getRotationMatrix2D(center=center, angle=angle, scale=1.0)
     rotated = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-    logging.info("Straightening angle : ", angle)
+    logging.info("Straightening angle : %s", angle)
     return rotated
 
 def sharpen_image(image):
