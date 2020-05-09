@@ -1,9 +1,3 @@
-def preprocess(PATH):
-    import scripts.main_preprocessIRS
-    image = scripts.main_preprocessIRS.preprocess(PATH)
-    return image
-
-
 # def extract_fields(x):
 #     import os
 #     import io
@@ -44,23 +38,19 @@ def preprocess(PATH):
 #     df = pd.read_csv('Extracted_Entities.csv')
 #     print(df)
 
-
 import os
 import logging
 logging.basicConfig(filename="newfile.log",level=logging.INFO, filemode='a',format='%(asctime)s:%(levelname)s:%(filename)s:%(message)s')
-
-
 logging.info('------------ Logging Start ------------------')
 
+def preprocess(PATH):
+    import scripts.main_preprocessIRS
+    image = scripts.main_preprocessIRS.preprocess(PATH)
+    return image
 
 PATH = '..\\images\\v3\\r0000_00.png'
-# PATH = '..\\images\\v2\\out8.pdf.jpg'
 name=os.path.basename(PATH)
 logging.info('File Name: %s' +str(name))
-
-# PATH = '..\\images\\v3\\r0000_00.png'
-# PATH = '..\\images\\v3\\r0100_00.png'
-
 
 image_name = preprocess(PATH)
 # print(os.getcwd(),type(image_name))
